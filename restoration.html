@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Реставрация - Деньги вне экономики - вторая жизнь в пикселях</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+
+    /* ─── PROCESS STEPS ─── */
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin: 4rem 0;
+      border: 1px solid var(--border);
+    }
+    .process-step {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+      transition: background 0.3s;
+    }
+    .process-step:last-child { border-right: none; }
+    .process-step:hover { background: rgba(201,168,76,0.03); }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem; font-weight: 700;
+      color: rgba(201,168,76,0.1); line-height: 1;
+      margin-bottom: 1rem; transition: color 0.3s;
+    }
+    .process-step:hover .step-num { color: rgba(201,168,76,0.22); }
+    .step-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: 0.75rem; }
+    .step-text  { font-size: 0.9rem; line-height: 1.65; color: var(--text-muted); }
+    .process-step:not(:last-child)::after {
+      content: '→';
+      position: absolute; right: -0.7rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold-dark); font-size: 1rem;
+      z-index: 2; background: var(--dark); padding: 0.2rem;
+    }
+
+    /* ─── COMPARE SLIDER ─── */
+    .compare {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 8/5;
+      margin: 3rem 0 0;
+      background: #0a0906;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+      cursor: ew-resize;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Картинка ПОСЛЕ — всегда на весь блок */
+    .compare-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* Картинка ДО — поверх, обрезается справа через clip-path */
+    .compare-before {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      /* clip-path set by JS */
+    }
+    .compare-before img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* Линия-разделитель */
+    .compare-line {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 3px;
+      transform: translateX(-50%);
+      background: var(--gold);
+      box-shadow: 0 0 18px rgba(201,168,76,0.8);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Кнопка на линии */
+    .compare-btn {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px; height: 46px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--dark);
+      font-size: 1.1rem; font-weight: 700;
+      box-shadow: 0 0 0 5px rgba(201,168,76,0.2), 0 6px 20px rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
+
+    /* Лейблы */
+    .compare-label {
+      position: absolute;
+      top: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.58rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      z-index: 11; pointer-events: none;
+    }
+    .compare-label.before {
+      left: 1rem;
+      background: rgba(13,11,8,0.85);
+      color: var(--text-muted);
+      border: 1px solid rgba(138,122,98,0.25);
+    }
+    .compare-label.after {
+      right: 1rem;
+      background: rgba(201,168,76,0.15);
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+    }
+
+    /* Подпись */
+    .compare-caption {
+      display: flex; justify-content: space-between;
+      padding: 0.8rem 1.2rem;
+      background: rgba(9,8,6,0.97);
+      border: 1px solid var(--border);
+      border-top: none;
+    }
+    .compare-caption span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .compare-caption span:first-child { color: var(--text-muted); }
+    .compare-caption span:last-child  { color: rgba(201,168,76,0.45); }
+
+    .viewer-hint {
+      text-align: center; margin-top: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(138,122,98,0.45);
+    }
+
+    /* ─── FINDINGS ─── */
+    .findings-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 3rem;
+    }
+    .finding {
+      background: var(--dark-3); border: 1px solid var(--border);
+      padding: 2.5rem; display: flex; gap: 1.5rem; align-items: flex-start;
+      transition: border-color 0.3s;
+    }
+    .finding:hover { border-color: rgba(201,168,76,0.35); }
+    .finding-icon  { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .finding-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--cream); margin-bottom: 0.5rem; }
+    .finding-text  { font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-step::after { display: none; }
+      .findings-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVIGATION ─── -->
+  <nav>
+    <a href="index.html" class="nav-logo">Деньги вне экономики <span>- вторая жизнь в пикселях</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">О проекте</a></li>
+      <li><a href="model.html">3D Модель</a></li>
+      <li><a href="restoration.html">Реставрация</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="page-hero" style="min-height: 50vh; padding-top: 140px; padding-bottom: 60px;">
+    <p class="hero-eyebrow">Страница 03</p>
+    <h1 class="hero-title">Цифровая <em>реставрация</em></h1>
+    <p class="hero-subtitle">До и после — возвращение к жизни исторического документа</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── SLIDER 1: ЛИЦЕВАЯ СТОРОНА ─── -->
+  <div class="section">
+    <span class="section-label reveal">Лицевая сторона · Аверс</span>
+    <h2 class="section-title reveal">Р.Ф.С.Р. · 1000 рублей<br><em>до и после</em></h2>
+
+    <div class="reveal">
+      <div class="compare" id="c1">
+
+        <!-- ПОСЛЕ (задний план, задаёт высоту) -->
+        <img class="compare-img" src="assets/images/Front_BSDF.png" alt="После реставрации" />
+
+        <!-- ДО (поверх, обрезается) -->
+        <div class="compare-before" id="c1-before">
+          <img src="assets/images/before_front.jpg" alt="До реставрации" />
+        </div>
+
+        <!-- Линия -->
+        <div class="compare-line" id="c1-line">
+          <div class="compare-btn">⇔</div>
+        </div>
+
+        <!-- Лейблы -->
+        <div class="compare-label before">◫ До</div>
+        <div class="compare-label after">После ◈</div>
+      </div>
+
+      <div class="compare-caption">
+        <span>Стоковое фото · oldcurrency.ru</span>
+        <span>Цифровая реставрация · Photoshop</span>
+      </div>
+      <p class="viewer-hint">⇔ &nbsp; Перетащите ползунок для сравнения</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── SLIDER 2: ОБОРОТНАЯ СТОРОНА ─── -->
+  <div class="section">
+    <span class="section-label reveal">Оборотная сторона · Реверс</span>
+    <h2 class="section-title reveal">Разменный билет<br><em>до и после</em></h2>
+
+    <div class="reveal">
+      <div class="compare" id="c2">
+
+        <!-- ПОСЛЕ -->
+        <img class="compare-img" src="assets/images/Back_BSDF.png" alt="После реставрации" />
+
+        <!-- ДО -->
+        <div class="compare-before" id="c2-before">
+          <img src="assets/images/before_back.jpg" alt="До реставрации" />
+        </div>
+
+        <!-- Линия -->
+        <div class="compare-line" id="c2-line">
+          <div class="compare-btn">⇔</div>
+        </div>
+
+        <!-- Лейблы -->
+        <div class="compare-label before">◫ До</div>
+        <div class="compare-label after">После ◈</div>
+      </div>
+
+      <div class="compare-caption">
+        <span>Стоковое фото · oldcurrency.ru</span>
+        <span>Цифровая реставрация · Photoshop</span>
+      </div>
+      <p class="viewer-hint">⇔ &nbsp; Перетащите ползунок для сравнения</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── FINDINGS ─── -->
+  <div class="section">
+    <span class="section-label reveal">Результаты</span>
+    <h2 class="section-title reveal">Что открыла<br><em>реставрация</em></h2>
+    <div class="findings-grid">
+      <div class="finding reveal">
+        <div class="finding-icon">◉</div>
+        <div>
+          <h3 class="finding-title">Чёткость текста</h3>
+          <p class="finding-text">Надписи «Николаевск на Амуре», «1920 Г.» и мелкий текст стали читаемы — восстановлен контраст и резкость каждой буквы.</p>
+        </div>
+      </div>
+      <div class="finding reveal">
+        <div class="finding-icon">✦</div>
+        <div>
+          <h3 class="finding-title">Чистота фона</h3>
+          <p class="finding-text">Удалены пятна, загрязнения и артефакты хранения. Светло-зелёный фон купюры восстановлен до первоначального тона.</p>
+        </div>
+      </div>
+      <div class="finding reveal">
+        <div class="finding-icon">⬡</div>
+        <div>
+          <h3 class="finding-title">Орнамент и рамка</h3>
+          <p class="finding-text">Декоративная рамка и внутренний орнамент полностью восстановлены — видны все детали гильошного узора.</p>
+        </div>
+      </div>
+      <div class="finding reveal">
+        <div class="finding-icon">◈</div>
+        <div>
+          <h3 class="finding-title">Печать Госбанка</h3>
+          <p class="finding-text">Круглая печать «Государственного Банка Николаевского отделения» с двуглавым орлом восстановлена в деталях.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CTA ─── -->
+  <div class="section" style="text-align: center; padding-top: 40px;">
+    <div class="ornament reveal"><span class="ornament-icon">◆</span></div>
+    <h3 class="section-title reveal" style="font-size: 2rem;">Хотите рассмотреть<br><em>купюру в 3D?</em></h3>
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" class="reveal">
+      <a href="index.html" class="btn"><span>О проекте</span></a>
+      <a href="model.html" class="btn"><span>Смотреть 3D модель</span><span class="btn-arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-logo">Деньги вне экономики</div>
+    <p class="footer-text">Цифровой архив финансовых свидетельств Гражданской войны на Дальнем Востоке России</p>
+    <ul class="footer-nav">
+      <li><a href="index.html">О проекте</a></li>
+      <li><a href="model.html">3D Модель</a></li>
+      <li><a href="restoration.html">Реставрация</a></li>
+    </ul>
+    <p class="footer-copy">Николаевск-на-Амуре · Историко-цифровой проект</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    function initCompare(wrapperId, beforeId, lineId) {
+      const wrap   = document.getElementById(wrapperId);
+      const before = document.getElementById(beforeId);
+      const line   = document.getElementById(lineId);
+      if (!wrap) return;
+
+      let dragging = false;
+
+      function update(clientX) {
+        const rect = wrap.getBoundingClientRect();
+        let pct = Math.max(2, Math.min(98, (clientX - rect.left) / rect.width * 100));
+        before.style.setProperty('clip-path', `inset(0 ${100 - pct}% 0 0)`, 'important');
+        line.style.left = pct + '%';
+      }
+
+      // Начальное положение после загрузки
+      window.addEventListener('load', () => {
+        before.style.setProperty('clip-path', 'inset(0 50% 0 0)', 'important');
+        line.style.left = '50%';
+      });
+
+      wrap.addEventListener('mousedown',  e => { dragging = true; e.preventDefault(); update(e.clientX); });
+      document.addEventListener('mousemove', e => { if (dragging) update(e.clientX); });
+      document.addEventListener('mouseup',   () => dragging = false);
+
+      wrap.addEventListener('touchstart',  e => { dragging = true; update(e.touches[0].clientX); }, { passive: true });
+      document.addEventListener('touchmove', e => { if (dragging) update(e.touches[0].clientX); }, { passive: true });
+      document.addEventListener('touchend',  () => dragging = false);
+    }
+
+    initCompare('c1', 'c1-before', 'c1-line');
+    initCompare('c2', 'c2-before', 'c2-line');
+  </script>
+</body>
+</html>
