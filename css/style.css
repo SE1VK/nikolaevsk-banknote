@@ -177,7 +177,7 @@ nav {
 
 .hero-eyebrow {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.65rem;
+  font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -206,7 +206,7 @@ nav {
 
 .hero-subtitle {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(1.4rem, 2.7vw, 1.8rem);
   font-weight: 300;
   font-style: italic;
   color: var(--text-muted);
@@ -225,7 +225,7 @@ nav {
 
 .section-label {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.62rem;
+  font-size: 1.6rem;
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -250,7 +250,7 @@ nav {
 
 .section-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
+  font-size: 1.8rem;
   font-weight: 300;
   line-height: 1.85;
   color: var(--cream-2);
@@ -342,6 +342,8 @@ nav {
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  font-size: 1.1rem;
+  padding: 1rem 2.2rem;
   transition: color 0.4s ease;
 }
 
@@ -405,7 +407,7 @@ nav {
 
 .quote-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem;
+  font-size: 1.8rem;
   font-style: italic;
   font-weight: 300;
   color: var(--cream-2);
@@ -415,7 +417,7 @@ nav {
 
 .quote-source {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.65rem;
+  font-size: 1rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold-dark);
@@ -457,7 +459,7 @@ nav {
 
 .timeline-year {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.65rem;
+  font-size: 1.5rem;
   letter-spacing: 0.2em;
   color: var(--gold);
   text-transform: uppercase;
@@ -465,7 +467,7 @@ nav {
 }
 
 .timeline-text {
-  font-size: 1.05rem;
+  font-size: 1.8rem;
   color: var(--cream-2);
   font-weight: 300;
 }
@@ -703,14 +705,14 @@ footer {
 
 .footer-logo {
   font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: var(--gold);
   letter-spacing: 0.1em;
 }
 
 .footer-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   font-style: italic;
   color: var(--text-muted);
   max-width: 500px;
@@ -725,7 +727,7 @@ footer {
 
 .footer-nav a {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -739,7 +741,7 @@ footer {
 
 .footer-copy {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.6rem;
+  font-size: 1.2rem;
   letter-spacing: 0.1em;
   color: rgba(138,122,98,0.5);
 }
