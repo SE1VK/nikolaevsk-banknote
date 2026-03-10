@@ -19,8 +19,8 @@
       padding: 2.5rem;
     }
     .spec-icon { font-size: 1.75rem; margin-bottom: 1rem; opacity: 0.6; }
-    .spec-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cream); margin-bottom: 0.75rem; }
-    .spec-text  { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; line-height: 1.7; color: var(--text-muted); }
+    .spec-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--cream); margin-bottom: 0.75rem; }
+    .spec-text  { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; line-height: 1.7; color: var(--text-muted); }
     @media (max-width: 640px) { .model-specs { grid-template-columns: 1fr; } }
 
     /* ─── MUSEUM SHOWCASE ─── */
@@ -99,8 +99,8 @@
     }
     .museum-corner.tl { top:12px;    left:12px;   border-width:2px 0 0 2px; }
     .museum-corner.tr { top:12px;    right:12px;  border-width:2px 2px 0 0; }
-    .museum-corner.bl { bottom:42px; left:12px;   border-width:0 0 2px 2px; }
-    .museum-corner.br { bottom:42px; right:12px;  border-width:0 2px 2px 0; }
+    .museum-corner.bl { bottom:80px; left:12px;   border-width:0 0 2px 2px; }
+    .museum-corner.br { bottom:80px; right:12px;  border-width:0 2px 2px 0; }
 
     /* Сам вьюер */
     model-viewer {
@@ -127,13 +127,15 @@
     }
     .museum-caption-left {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.95rem; font-style: italic;
+      font-size: 1.5rem; font-style: italic;
       color: var(--text-muted); letter-spacing: 0.03em;
+      font-weight: 900;
     }
     .museum-caption-right {
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.58rem; letter-spacing: 0.22em;
+      font-size: 1rem; letter-spacing: 0.22em;
       text-transform: uppercase; color: rgba(201,168,76,0.38);
+      font-weight: 900;
     }
 
     /* Подсказки */
@@ -145,8 +147,9 @@
     .hint-item {
       display: flex; align-items: center; gap: 0.5rem;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.6rem; letter-spacing: 0.15em;
+      font-size: 0.8rem; letter-spacing: 0.15em;
       text-transform: uppercase; color: rgba(138,122,98,0.5);
+      font-weight: 900;
     }
   </style>
 </head>
@@ -235,8 +238,7 @@
 Можно заметить, что на лицевой стороне купюры допущена опечатка: вместо "РСФСР" написано "РФСР" - это прямое следствие той спешки, в которой печатались «тряпицынки».
         </p>
         <p class="section-text reveal">
-          Всего их было выпущено на сумму 100 миллионов рублей. В обращении они находились не более двух недель - не были обеспечены ни товарами, ни ценностями, не имели никакой покупательной способности и у населения спросом не пользовались.
-В ночь с 31 мая на 1 июня 1920 года Тряпицын организовал поджог Николаевска-на-Амуре. Город был уничтожен, а вместе с ним исчезли и последние свидетельства короткой жизни этих денег. Уцелевшие экземпляры «тряпицынок» сегодня представляют редкую нумизматическую и историческую ценность. 
+           
         </p>
       </div>
 
@@ -250,6 +252,9 @@
           <tr><td>Состояние оригинала</td><td>Требовало реставрации</td></tr>
           <tr><td>Тип модели</td><td>Цифровая 3D-реконструкция</td></tr>
         </table>
+        <p class="section-text reveal" style="margin-top: 2rem;">
+         Всего их было выпущено на сумму 100 миллионов рублей. В обращении они находились не более двух недель - не были обеспечены ни товарами, ни ценностями, не имели никакой покупательной способности и у населения спросом не пользовались. В ночь с 31 мая на 1 июня 1920 года Тряпицын организовал поджог Николаевска-на-Амуре. Город был уничтожен, а вместе с ним исчезли и последние свидетельства короткой жизни этих денег. Уцелевшие экземпляры «тряпицынок» сегодня представляют редкую нумизматическую и историческую ценность. 
+        </p>
       </div>
 
     </div>
